@@ -11,9 +11,11 @@ public:
     ~FlowerList();
     bool isEmpty() const;
     int getLength() const;
+    string* getFlowerNames() const;
     bool retrieve(string flowerName, Flower& flower) const;
     bool add(string flowerName);
     bool remove(string flowerName);
+    string printFlowers() const;
     FlowerList& operator=( FlowerList& right );
 
 private:

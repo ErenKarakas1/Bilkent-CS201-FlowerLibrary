@@ -15,6 +15,7 @@ public:
     bool add(string feature);
     bool remove(string feature);
     string printFlower() const;
+    bool featureExists(string feaure) const;
     Flower& operator=( Flower& aFlower);
 
 private:

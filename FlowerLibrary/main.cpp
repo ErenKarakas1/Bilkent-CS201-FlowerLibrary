@@ -5,7 +5,7 @@ using namespace std;
 
 int main(){
     FlowerLibrary L;
-    //L.listFlowers();
+    L.listFlowers();
 
     // Testing add flower
     cout << "Testing add flower" << endl;
@@ -16,11 +16,12 @@ int main(){
     L.addFlower("verbascum");
     cout << endl;
 
+
     L.addFlower("Magnolia");
     L.addFlower("magnolia");
     cout << endl;
 
-    /*
+
     L.listFlowers();
     cout << endl;
 
@@ -71,5 +72,30 @@ int main(){
 
     L.listFeatures("magnolia");
     cout << endl;
-    */
+
+    L.listFeatures("calla lilly");
+    cout << endl;
+
+    // Testing remove feature
+    cout << endl;
+    cout << "Testing remove feature" << endl;
+    cout << endl;
+
+    L.removeFeature("magnolia", "citronella scented");
+    L.removeFeature("magnolia", "yellow");
+
+    L.listFeatures("magnolia");
+
+    // Testing finding flowers
+    cout << endl;
+    cout << "Testing finding flowers" << endl;
+    cout << endl;
+
+    L.findFlowers("ornamental");
+    L.findFlowers("yellow");
+    cout << endl;
+
+    L.findFlowers("white");
+
+    return 0;
 }

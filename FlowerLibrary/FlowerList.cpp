@@ -50,27 +50,51 @@ int FlowerList::getLength() const {
     return size;
 }
 
-bool FlowerList::retrieve(string flowerName, Flower& flower) const {
+string* FlowerList::getFlowerNames() const {
+    int index = 0;
+    string* names = new string[size];
+    FlowerNode* temp = head;
+
+    while ( temp != NULL ) {
+        names[index] = temp->f.getName();
+        temp = temp->next;
+        ++index;
+    }
+
+    return names;
+}
+
+bool FlowerList::retrieve( string flowerName, Flower& flower ) const {
     FlowerNode* found = findFlower( flowerName );
 
     if ( found == NULL ) {
         return false;
     }
     else {
-        flower = found->f;
+        FlowerNode* curr = head;
+
+        while ( curr != NULL ) {
+            if ( flowerName == curr->f.getName() ) {
+                break;
+            }
+            curr = curr->next;
+        }
+
+        flower = curr->f;
         return true;
     }
 }
 
-bool FlowerList::add(string flowerName) {
+bool FlowerList::add( string flowerName ) {
     FlowerNode* found = findFlower( flowerName );
+
     if ( found != NULL ) {
         return false;
     }
 
     if ( isEmpty() ) {
         head = new FlowerNode;
-        Flower curr = Flower(flowerName);
+        Flower curr = Flower( flowerName );
         
         head->f = curr;
         head->next = NULL;
@@ -80,31 +104,39 @@ bool FlowerList::add(string flowerName) {
         return true;
     }
 
-    FlowerNode* temp = head;
+    FlowerNode* curr = head;
+    FlowerNode* prev = NULL;
 
-    while ( temp != NULL ) {
-        if ( flowerName > temp->f.getName() ) {
+    while ( curr != NULL ) {
+        if ( flowerName < curr->f.getName() ) {
             break;
         }
-        temp = temp->next;
+        prev = curr;
+        curr = curr->next;
     }
 
     FlowerNode* newNode = new FlowerNode;
-    Flower curr = Flower( flowerName );
+    Flower newFlower = Flower( flowerName );
 
-    newNode->f = curr;
-    newNode->next = temp->next;
+    newNode->f = newFlower;
+    newNode->next = curr;
 
-    temp->next = newNode;
+    if ( prev == NULL ) {
+        head = newNode;
+
+    }
+    else {
+        prev->next = newNode;
+    }
 
     delete found;
-    found, temp = NULL;
+    found, curr, prev = NULL;
 
     ++size;
     return true;
 }
 
-bool FlowerList::remove(string flowerName) {
+bool FlowerList::remove( string flowerName ) {
     FlowerNode* found = findFlower( flowerName );
     
     if ( found == NULL ) {
@@ -129,6 +161,19 @@ bool FlowerList::remove(string flowerName) {
 
     --size;
     return true;
+}
+
+string FlowerList::printFlowers() const {
+    string output = "";
+    FlowerNode* temp = head;
+
+    while ( temp != NULL ) {
+        output += temp->f.printFlower();
+        temp = temp->next;
+    }
+
+    temp = NULL;
+    return output;
 }
 
 FlowerList& FlowerList::operator=( FlowerList& right ) {

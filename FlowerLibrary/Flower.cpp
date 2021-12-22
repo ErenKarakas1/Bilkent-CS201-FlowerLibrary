@@ -6,38 +6,38 @@ using namespace std;
 Flower::Flower() {
     head = NULL;
     size = 0;
+    this->flowerName = "";
 }
 
-Flower::Flower(string flowerName) {
+Flower::Flower( string flowerName ) {
     head = NULL;
     size = 0;
     this->flowerName = flowerName;
 }
 
-Flower::Flower(const Flower& aFlower) {
-    this->flowerName = aFlower.flowerName;
+Flower::Flower( const Flower& aFlower ) {
+    size = aFlower.size;
+    flowerName = aFlower.flowerName;
 
-    if (aFlower.head == NULL) {
+    if ( aFlower.head == NULL ) {
         head = NULL;
     }
     else {
         head = new FeatureNode;
         head->feature = aFlower.head->feature;
-        head->next = aFlower.head->next;
 
-        FeatureNode* temp = aFlower.head->next;
-        FeatureNode* curr = head;
+        FeatureNode* node = head;
 
-        while ( temp != NULL ) {
-            curr->next = new FeatureNode;
-            curr->next->feature = temp-> feature;
-            temp = temp->next;
-            curr = curr->next;
+        for ( FeatureNode* curr = aFlower.head->next; curr != NULL; curr = curr->next ) {
+            node->next = new FeatureNode;
+            node = node->next;
+            node->feature = curr->feature;
         }
 
-        curr->next = NULL;
+        node->next = NULL;
     }
 }
+
 
 Flower::~Flower() {
     FeatureNode* node = head;
@@ -63,7 +63,7 @@ string Flower::getName() const {
     return flowerName;
 }
 
-bool Flower::add(string feature) {
+bool Flower::add( string feature ) {
     FeatureNode* found = findFeature( feature );
 
     if ( found != NULL ) {
@@ -81,31 +81,38 @@ bool Flower::add(string feature) {
         return true;
     }
     else {
-        FeatureNode* temp = head;
+        FeatureNode* curr = head;
+        FeatureNode* prev = NULL;
 
-        while ( temp != NULL ) {
-            if ( feature > temp->feature ) {
+        while ( curr != NULL ) {
+            if ( feature < curr->feature ) {
                 break;
             }
-            temp = temp->next;
+            prev = curr;
+            curr = curr->next;
         }
 
         FeatureNode* newNode = new FeatureNode;
 
         newNode->feature = feature;
-        newNode->next = temp->next;
+        newNode->next = curr;
 
-        temp->next = newNode;
+        if ( prev == NULL ) {
+            head = newNode;
+        }
+        else {
+            prev->next = newNode;
+        }
 
         delete found;
-        found, temp = NULL;
+        found, curr, prev = NULL;
         
         ++size;
         return true;
     }
 }
 
-bool Flower::remove(string feature) {
+bool Flower::remove( string feature ) {
     FeatureNode* found = findFeature( feature );
 
     if ( found == NULL ) {
@@ -139,13 +146,25 @@ string Flower::printFlower() const {
         FeatureNode* temp = head;
 
         while ( temp != NULL ) {
-            output += temp->feature + " ";
+            output += temp->feature + ", ";
             temp = temp->next;
         }
     }
 
-    output += "\n";
+    if ( output == flowerName + ": " ) {
+        output += "No feature\n";
+    }
+    else {
+        output = output.substr( 0, output.length() - 2 ) + "\n";
+    }
+
     return output;
+}
+
+bool Flower::featureExists( string feature ) const {
+    FeatureNode* found = findFeature( feature );
+
+    return found != NULL;
 }
 
 Flower& Flower::operator=( Flower& aFlower ) {
@@ -157,10 +176,10 @@ Flower& Flower::operator=( Flower& aFlower ) {
             delete node;
             node = head;
         }
-
         head = NULL;
 
-        this->flowerName = aFlower.flowerName;
+        size = aFlower.size;
+        flowerName = aFlower.flowerName;
 
         if ( aFlower.head == NULL ) {
             head = NULL;
@@ -168,19 +187,16 @@ Flower& Flower::operator=( Flower& aFlower ) {
         else {
             head = new FeatureNode;
             head->feature = aFlower.head->feature;
-            head->next = aFlower.head->next;
 
-            FeatureNode* temp = aFlower.head->next;
-            FeatureNode* curr = head;
+            FeatureNode* node = head;
 
-            while ( temp != NULL ) {
-                curr->next = new FeatureNode;
-                curr->next->feature = temp-> feature;
-                temp = temp->next;
-                curr = curr->next;
+            for ( FeatureNode* curr = aFlower.head->next; curr != NULL; curr = curr->next ) {
+                node->next = new FeatureNode;
+                node = node->next;
+                node->feature = curr->feature;
             }
 
-            curr->next = NULL;
+            node->next = NULL;
         }
     }
     return *this;
