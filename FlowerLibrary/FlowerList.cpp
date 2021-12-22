@@ -1,6 +1,10 @@
 #include <iostream>
 #include "FlowerList.h"
 using namespace std;
+/*
+Eren KARAKAS
+22002722
+*/
 
 
 FlowerList::FlowerList() {
@@ -161,6 +165,19 @@ bool FlowerList::remove( string flowerName ) {
 
     --size;
     return true;
+}
+
+void FlowerList::replace( Flower& flower ) {
+    FlowerNode* curr = head;
+
+    while ( curr != NULL ) {
+        if ( flower.getName() == curr->f.getName() ) {
+            break;
+        }
+        curr = curr->next;
+    }
+    curr->f = flower;
+
 }
 
 string FlowerList::printFlowers() const {

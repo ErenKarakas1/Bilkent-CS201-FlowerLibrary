@@ -1,19 +1,26 @@
 using namespace std;
+/*
+Eren KARAKAS
+22002722
+*/
+
 
 class Flower{
-// Eren KARAKAS
-// 22002722
-
 public:
     Flower();
     Flower(string flowerName);
     Flower(const Flower& aFlower);
     ~Flower();
     bool isEmpty() const;
+
+    // getters
     int getLength() const ;
     string getName() const;
+
+    // other necessary methods
     bool add(string feature);
     bool remove(string feature);
+    
     string printFlower() const;
     bool featureExists(string feaure) const;
     Flower& operator=( Flower& aFlower);

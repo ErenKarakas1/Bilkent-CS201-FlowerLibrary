@@ -1,6 +1,10 @@
 #include <iostream>
 #include "FlowerLibrary.h"
 using namespace std;
+/*
+Eren KARAKAS
+22002722
+*/
 
 
 FlowerLibrary::FlowerLibrary() {
@@ -27,7 +31,7 @@ void FlowerLibrary::removeFlower( string name ) {
     string lowercase_name = translate( name );
 
     cout << lowercase_name;
-    if ( flowers.remove(lowercase_name ) ) {
+    if ( flowers.remove( lowercase_name ) ) {
         cout << " has been removed from the library." << endl;
     }
     else {
@@ -40,7 +44,7 @@ void FlowerLibrary::listFlowers() const {
         cout << flowers.printFlowers();
     }
     else {
-        cout << "Library is empty.";
+        cout << "Library is empty." << endl;
     }
 }
 
@@ -48,7 +52,7 @@ void FlowerLibrary::listFeatures(string name) const {
     Flower flower;
     string lowercase_name = translate( name );
     
-    if ( !flowers.retrieve(lowercase_name, flower ) ) {
+    if ( !flowers.retrieve( lowercase_name, flower ) ) {
         cout << lowercase_name << " isn't found in library" << endl;
     }
     else {
@@ -58,6 +62,7 @@ void FlowerLibrary::listFeatures(string name) const {
 
 void FlowerLibrary::addFeature( string name,string feature ) {
     Flower flower;
+
     string lowercase_name = translate( name );
     string lowercase_feature = translate( feature );
 
@@ -65,10 +70,11 @@ void FlowerLibrary::addFeature( string name,string feature ) {
         cout << lowercase_name << " isn't found in library" << endl;
     }
     else {
-        if ( !flower.add(lowercase_feature ) ) {
+        if ( !flower.add( lowercase_feature ) ) {
             cout << lowercase_feature << " already exists in " << lowercase_name << endl;
         }
         else {
+            flowers.replace( flower );
             cout << lowercase_feature << " is added into " << lowercase_name << endl;
         }
     }
@@ -79,14 +85,15 @@ void FlowerLibrary::removeFeature( string name, string feature ) {
     string lowercase_name = translate( name );
     string lowercase_feature = translate( feature );
 
-    if ( !flowers.retrieve(lowercase_name, flower ) ) {
+    if ( !flowers.retrieve( lowercase_name, flower ) ) {
         cout << lowercase_name << " isn't found in library" << endl;
     }
     else {
-        if ( !flower.remove(lowercase_feature ) ) {
+        if ( !flower.remove( lowercase_feature ) ) {
             cout << lowercase_feature << " doesn't exist in " << lowercase_name << endl;
         }
         else {
+            flowers.replace( flower );
             cout << lowercase_feature << " is removed from " << lowercase_name << endl;
         }
     }
